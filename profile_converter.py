@@ -53,47 +53,34 @@ if unit == 'kWh':
 # 30 minutes
 # 1 hour
 # 1 day
-
 old_interval = json_object['interval_in_minutes']
 json_object['interval_in_minutes'] = interval
+new_interval = json_object['interval_in_minutes']
 
 
 def convert_interval(data, old_interval, new_interval):
+    result = []
+
     if old_interval < new_interval:
-
-        result = []
-        sum_values = 0
-        count = 0
-
-        for value in data:
-            sum_values += value
-            count += 1
-
-            if count * old_interval >= new_interval:
-                result.append(sum_values / count)
-                sum_values = 0
-                count = 0
-
-        if count > 0:
-            result.append(sum_values / count)
-
-        return result
+        # Case 1: Converting from a more frequent interval to a less frequent interval
+        for i in range(0, len(data), new_interval // old_interval):
+            chunk = data[i:i + new_interval // old_interval]
+            if chunk:
+                result.append(sum(chunk) / len(chunk))
     elif old_interval > new_interval:
-
-        result = []
-
+        # Case 2: Converting from a less frequent interval to a more frequent interval
         for value in data:
-            repetitions = int(new_interval / old_interval)
+            repetitions = old_interval // new_interval
             result.extend([value] * repetitions)
-
-        return result
     else:
+        # Case 3: When old and new intervals are the same, no change is needed
+        result = data
 
-        return data
+    return result
 
 
 data = json_object['data']
-newData = convert_interval(data, old_interval, 1)
+newData = convert_interval(data, old_interval, int(new_interval))
 json_object['data'] = newData
 # print(convert_interval(data,15, 30))
 
