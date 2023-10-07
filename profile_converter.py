@@ -54,8 +54,48 @@ if unit == 'kWh':
 # 1 hour
 # 1 day
 
+old_interval = json_object['interval_in_minutes']
 json_object['interval_in_minutes'] = interval
 
+
+def convert_interval(data, old_interval, new_interval):
+    if old_interval < new_interval:
+
+        result = []
+        sum_values = 0
+        count = 0
+
+        for value in data:
+            sum_values += value
+            count += 1
+
+            if count * old_interval >= new_interval:
+                result.append(sum_values / count)
+                sum_values = 0
+                count = 0
+
+        if count > 0:
+            result.append(sum_values / count)
+
+        return result
+    elif old_interval > new_interval:
+
+        result = []
+
+        for value in data:
+            repetitions = int(new_interval / old_interval)
+            result.extend([value] * repetitions)
+
+        return result
+    else:
+
+        return data
+
+
+data = json_object['data']
+newData = convert_interval(data, old_interval, 1)
+json_object['data'] = newData
+# print(convert_interval(data,15, 30))
 
 with open(outFile, 'w') as json_output_file:
     json.dump(json_object, json_output_file, indent=4)
