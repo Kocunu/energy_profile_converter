@@ -21,7 +21,7 @@ The program should be called from the command line, read the input file, perform
 Example Input to call the programm and change the enrgy profiles
 
 ```bash
-$ python profile_converter.py input_files/example.json output.json --
+$ python3 profile_converter.py input_files/example.json output.json --
 interval 60 --unit KJ
 ```
 1. Read the profile from input_files/example.json.
