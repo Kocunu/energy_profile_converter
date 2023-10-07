@@ -62,18 +62,15 @@ def convert_interval(data, old_interval, new_interval):
     result = []
 
     if old_interval < new_interval:
-        # Case 1: Converting from a more frequent interval to a less frequent interval
         for i in range(0, len(data), new_interval // old_interval):
             chunk = data[i:i + new_interval // old_interval]
             if chunk:
                 result.append(sum(chunk) / len(chunk))
     elif old_interval > new_interval:
-        # Case 2: Converting from a less frequent interval to a more frequent interval
         for value in data:
             repetitions = old_interval // new_interval
             result.extend([value] * repetitions)
     else:
-        # Case 3: When old and new intervals are the same, no change is needed
         result = data
 
     return result
