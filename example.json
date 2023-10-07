@@ -1,0 +1,6 @@
+{
+ "name": "Solar Tracker",
+ "interval_in_minutes": 15,
+ "unit": "kWh",
+ "data": [0.0,0.0,0.1]
+}
