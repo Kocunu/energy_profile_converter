@@ -1,6 +1,23 @@
-The goal of this project is to create a Python program that can read energy profiles and perform operations on them.
+# Energy profile converter
+>This project is a compensation exercise for FH Joanneum. Only Python may be used as the programming language, and among other things, no third-party libraries are allowed. The instructions are included in the folder to provide more detailed information about the exercise. In this context, I will only describe the most important parts.
 
-Example of the json file
+The goal of this project is to create a Python program that can read energy profiles and perform operations on them.
+Like converting the unit and manipulating the data.
+
+Main objectives:
+
+[ ] Read the profile from input_files/example.json.
+
+[ ] change the "interval_in_minutes" from the current value (15) to 60. 3. modify the "data", so the interval matches the 60 minutes.
+
+[ ] hange the "unit" to "KJ" (Kilojoules).
+
+[ ] modify the data, so it is converted from the current unit (kWh) to KJ.
+
+[ ] write the resulting new profile to output.json
+
+
+**Example of the json file**
 ```json
 {
     "name": "Solar Tracker",
@@ -9,35 +26,25 @@ Example of the json file
     "data": [0.0,0.0,0.1,...]
 }
 ```
-
-"name": name of the system
-"interval_in_minutes": interval of data. For example, 15 means there is a data entry for every 15 minutes (35040 for a year). --> *1440 / 15 x 365*
-"unit": the unit of the data.
-"data": array with the data (floats) itself. --> *Depends on the interval_in_minutes*
-
-
-The program should be called from the command line, read the input file, perform changes and write the changes back to an output file.
-
-Example Input to call the programm and change the enrgy profiles
-
+**Example of the console input** 
 ```bash
 $ python profile_converter.py input_files/example.json output.json --
 interval 60 --unit KJ
 ```
-1. Read the profile from input_files/example.json.
-2. change the "interval_in_minutes" from the current value (15) to 60. 3. modify the "data", so the interval matches the 60 minutes.
-4. change the "unit" to "KJ" (Kilojoules).
-5. modify the data, so it is converted from the current unit (kWh) to KJ.
-6. write the resulting new profile to output.json
 
-Your program should be able to convert between the following intervals:
+**Your program should be able to convert between the following intervals:**
 * 1 minute 
 * 15 minutes 
 * 30 minutes 
 * 1 hour
 * 1 day
 
-Your program should be able to convert between the following units:
+
+* When converting from a more frequent interval to a less frequent interval use the average of the old values for the new one. For example [0.1,0.5,0.6,0.4,...] in a 15 minutes interval should give [0.3,0.5,...] in a 30 minutes interval.
+
+* When converting from a less frequent interval to a more frequent interval just repeat the values. For example [0.3,0.5,...] in a 30 minutes interval should give [0.3,0.3,0.5,0.5,...] in a 15 minutes interval.
+
+**Your program should be able to convert between the following units:**
 * kWh (kilowatt-hours) Wh (watt-hours)
 * KJ (kilojoule)
 * J (joule)
