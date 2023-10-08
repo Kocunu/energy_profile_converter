@@ -53,13 +53,17 @@ if unit == 'kWh':
 # 30 minutes
 # 1 hour
 # 1 day
-
 old_interval = json_object['interval_in_minutes']
 json_object['interval_in_minutes'] = interval
+new_interval = json_object['interval_in_minutes']
 
 
 def convert_interval(data, old_interval, new_interval):
     result = []
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3b4effcdfbe9f6096e1757d188edeb7ae1a9c960
     if old_interval < new_interval:
         for i in range(0, len(data), new_interval // old_interval):
             chunk = data[i:i + new_interval // old_interval]
@@ -76,7 +80,7 @@ def convert_interval(data, old_interval, new_interval):
 
 
 data = json_object['data']
-newData = convert_interval(data, old_interval, 1)
+newData = convert_interval(data, old_interval, int(new_interval))
 json_object['data'] = newData
 # print(convert_interval(data,15, 30))
 

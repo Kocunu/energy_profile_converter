@@ -28,7 +28,7 @@ Main objectives:
 ```
 **Example of the console input** 
 ```bash
-$ python profile_converter.py input_files/example.json output.json --
+$ python3 profile_converter.py input_files/example.json output.json --
 interval 60 --unit KJ
 ```
 
