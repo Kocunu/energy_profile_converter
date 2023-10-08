@@ -49,6 +49,4 @@ interval 60 --unit KJ
 * KJ (kilojoule)
 * J (joule)
 
-
-The zip has to follow the naming comp_ws23_<YOUR-LASTNAME>_<YOUR-FIRSTNAME>.zip, e.g. comp_ws23_schwab_harald.zip.
-*OPTIONAL: Create a remote git repository on GitHub or git-iit.fh-joanneum.at and add the link to the repository in your README.*
+Github:https://github.com/Kocunu/energy_profile_converter

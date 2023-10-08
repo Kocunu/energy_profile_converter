@@ -59,37 +59,20 @@ json_object['interval_in_minutes'] = interval
 
 
 def convert_interval(data, old_interval, new_interval):
+    result = []
     if old_interval < new_interval:
-
-        result = []
-        sum_values = 0
-        count = 0
-
-        for value in data:
-            sum_values += value
-            count += 1
-
-            if count * old_interval >= new_interval:
-                result.append(sum_values / count)
-                sum_values = 0
-                count = 0
-
-        if count > 0:
-            result.append(sum_values / count)
-
-        return result
+        for i in range(0, len(data), new_interval // old_interval):
+            chunk = data[i:i + new_interval // old_interval]
+            if chunk:
+                result.append(sum(chunk) / len(chunk))
     elif old_interval > new_interval:
-
-        result = []
-
         for value in data:
-            repetitions = int(new_interval / old_interval)
+            repetitions = old_interval // new_interval
             result.extend([value] * repetitions)
-
-        return result
     else:
+        result = data
 
-        return data
+    return result
 
 
 data = json_object['data']
