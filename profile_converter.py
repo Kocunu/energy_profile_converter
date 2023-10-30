@@ -12,7 +12,7 @@ outFile = sys.argv[2]
 interval = sys.argv[4]
 unit = sys.argv[6]
 
-supported_units = ['KJ', 'kWh', 'Wh', 'J']
+supported_units = ['kJ', 'kWh', 'Wh', 'J']
 supported_intervals = ['1', '15', '30', '60', '1440']
 
 if unit not in supported_units:
@@ -35,17 +35,36 @@ with open(inFile, 'r') as json_file:
 
 json_object['unit'] = unit
 
-if unit == 'Wh':
-    json_object['data'] = [x * 1000 for x in json_object['data']]
+conversion_factors = {
+    "kWh": {
+        "Wh": 1000,
+        "kJ": 3600,
+        "J": 3600000,
+        "kWh": 1
+    },
+    "Wh": {
+        "Wh": 1,
+        "kJ": 3.6,
+        "J": 3600,
+        "kWh": 0.001
+    },
+    "J": {
+        "Wh": 0.000277778,
+        "kJ": 0.001,
+        "J": 1,
+        "kWh": 2.77778e-7
+    },
+    "kJ": {
+        "Wh": 0.277778,
+        "kJ": 1,
+        "J": 1000,
+        "kWh": 0.000277778
+    }
+}
 
-if unit == 'kJ':
-    json_object['data'] = [x * 3600 for x in json_object['data']]
+conversion_factor = conversion_factors[json_object['unit']][unit]
+json_object['data'] = [x * conversion_factor for x in json_object['data']]
 
-if unit == 'J':
-    json_object['data'] = [x * 3600000 for x in json_object['data']]
-
-if unit == 'kWh':
-    json_object['data'] = [x * 1 for x in json_object['data']]
 
 # Intervals
 # 1 minute
@@ -60,10 +79,6 @@ new_interval = json_object['interval_in_minutes']
 
 def convert_interval(data, old_interval, new_interval):
     result = []
-<<<<<<< HEAD
-=======
-
->>>>>>> 3b4effcdfbe9f6096e1757d188edeb7ae1a9c960
     if old_interval < new_interval:
         for i in range(0, len(data), new_interval // old_interval):
             chunk = data[i:i + new_interval // old_interval]
